@@ -15,8 +15,8 @@ Edit the `$scBaseUrl`, `$doTranscribe` & `$logDirectory` variables in the Detect
 
 ## Install-ScreenConnect
 ```powershell
-.\Install-ScreenConnect.ps1 -BaseUrl 'https://example.com' -Client "Staff Laptop" -Department "No Consent" -DeviceType "No Consent"
-.\Install-ScreenConnect.ps1 -BaseUrl 'https://example.com' -Client "Staff Laptop" -LogDirectory 'C:\Logs'
+.\Install-ScreenConnect.ps1 -BaseUrl "https://example.com" -Client "Staff Laptop" -Department "No Consent" -DeviceType "No Consent"
+.\Install-ScreenConnect.ps1 -BaseUrl "https://example.com" -Client "Staff Laptop" -LogDirectory "C:\Logs"
 ```
 -  `-BaseUrl` = The base URL to your ScreenConnect server that is accessible by the client computer which we are installing on.
 -  `-LogDirectory` = The directory in which to deposit logs for the Install-ScreenConnect script.
