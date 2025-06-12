@@ -38,11 +38,15 @@ Where-Object { $_.DisplayName -like "*$applicationName*" }
 $uninstallKey32 = Get-ItemProperty "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" |
 Where-Object { $_.DisplayName -like "*$applicationName*" }
 
-# Here we make a request to the SC Server and parse out the server version from the response headers
+# Here we make a request to the SC Server and parse out the server version from the one of the available pages.
 try {
-    $supportHeaders = Invoke-WebRequest -method Get -uri $scBaseUrl -TimeoutSec 240 -UseBasicParsing | Select-Object -ExpandProperty Headers
-    $scServerString = [string] $supportHeaders.Server -match "(?<server>ScreenConnect\/(?<version>\d{1,4}.\d{1,4}.\d{1,4}.\d{1,4})-\d+).*"
-    $scServerVersion = [Version] $Matches.version
+    #! Old header method - Seemingly patched or removed while reverse proxying perhaps?
+    # $supportHeaders = Invoke-WebRequest -method Get -uri $scBaseUrl -TimeoutSec 240 -UseBasicParsing | Select-Object -ExpandProperty Headers
+    # $scServerString = [string] $supportHeaders.Server -match "(?<server>ScreenConnect\/(?<version>\d{1,4}.\d{1,4}.\d{1,4}.\d{1,4})-\d+).*"
+
+    $supportPage = Invoke-WebRequest -method Get -uri "$scBaseUrl/Script.ashx" -TimeoutSec 240 -UseBasicParsing | Select-Object -ExpandProperty content
+    $scServerString = [string] $supportPage -match  "productVersion`":`"(?<version>\d+\.\d+\.\d+\.\d+)"
+
     if ($null -ne $scServerVersion) {
         $versionCheck = $true
     }
